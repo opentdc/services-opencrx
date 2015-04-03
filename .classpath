@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openCRX 3 (3.0.0+) ~ Core (jre-1.7)"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openMDX 2 (2.14.0+) ~ Core (jre-1.7)"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openMDX 2 (2.14.0+) ~ Security (jre-1.7)"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openMDX Thirdparty (2.14.0+) ~ OSGi Enterprise (jre-1.7)"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openMDX Thirdparty (2.14.0+) ~ OSGi Extension (jre-1.7)"/>
+	<classpathentry kind="output" path="build/jre-1.7/eclipse"/>
+</classpath>
