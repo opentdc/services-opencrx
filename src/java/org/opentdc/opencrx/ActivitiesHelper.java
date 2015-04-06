@@ -25,6 +25,7 @@ package org.opentdc.opencrx;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -119,7 +120,7 @@ public abstract class ActivitiesHelper {
     	    {
     	    	ActivityTypeQuery activityTypeQuery = 
 		    		(ActivityTypeQuery)pm.newQuery(ActivityType.class);
-		        activityTypeQuery.name().equalTo("Incidents");
+		        activityTypeQuery.name().elementOf(Arrays.asList("Bugs + Features", "Incidents"));
 		        List<ActivityType> activityTypes = activitySegment.getActivityType(activityTypeQuery);
 		        ActivityType incidentType = activityTypes.isEmpty() ? null : activityTypes.iterator().next();
     	    	activityCreator = pm.newInstance(ActivityCreator.class);
