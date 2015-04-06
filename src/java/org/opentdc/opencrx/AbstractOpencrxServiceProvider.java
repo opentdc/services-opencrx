@@ -66,7 +66,7 @@ public class AbstractOpencrxServiceProvider {
 		}
 		this.providerName = context.getInitParameter("opencrx.providerName");
 		this.segmentName = context.getInitParameter("opencrx.segmentName");
-		this.pm = pmf.getPersistenceManager();
+		this.pm = pmf.getPersistenceManager(userName, null);
 	}
 	
 	protected PersistenceManager getPersistenceManager(
@@ -88,6 +88,15 @@ public class AbstractOpencrxServiceProvider {
 	) {
 		return (org.opencrx.kernel.activity1.jmi1.Segment)this.getPersistenceManager().getObjectById(
 			new Path("xri://@openmdx*org.opencrx.kernel.activity1").getDescendant(
+				"provider", this.getProviderName(), "segment", this.getSegmentName()
+			)
+		);
+	}
+
+	protected org.opencrx.kernel.account1.jmi1.Segment getAccountSegment(
+	) {
+		return (org.opencrx.kernel.account1.jmi1.Segment)this.getPersistenceManager().getObjectById(
+			new Path("xri://@openmdx*org.opencrx.kernel.account1").getDescendant(
 				"provider", this.getProviderName(), "segment", this.getSegmentName()
 			)
 		);
