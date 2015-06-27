@@ -143,6 +143,7 @@ public abstract class AccountsHelper {
 		try {
 			pm.currentTransaction().begin();
 			Group addressBook = pm.newInstance(Group.class);
+			addressBook.setAccountType(ACCOUNT_TYPE_ADDRESS_BOOK);
 			addressBook.setName(name);
 			addressBook.setDescription(description);
 			accountSegment.addAccount(
@@ -173,9 +174,10 @@ public abstract class AccountsHelper {
 		MemberQuery memberQuery = (MemberQuery)pm.newQuery(Member.class);
 		memberQuery.forAllDisabled().isFalse();
 		memberQuery.thereExistsAccount().forAllDisabled().isFalse();
+		memberQuery.orderByModifiedAt().ascending();
 		return addressBook.getMember(memberQuery);
 	}
-	
+
 	/**
 	 * Get accounts for given address book.
 	 * 
@@ -196,6 +198,7 @@ public abstract class AccountsHelper {
 		accountQuery.forAllDisabled().isFalse();
 		accountQuery.thereExistsAccountMembership().forAllDisabled().isFalse();
 		accountQuery.thereExistsAccountMembership().thereExistsAccountFrom().equalTo(addressBook);
+		accountQuery.orderByModifiedAt().ascending();
 		return accountSegment.getAccount(accountQuery);
 	}
 	
