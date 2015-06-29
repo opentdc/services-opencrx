@@ -247,7 +247,7 @@ public abstract class ActivitiesHelper {
      * @param activitySegment
      * @return
      */
-    public static List<Resource> getProjectResources(
+    public static List<ResourceAssignment> getProjectResources(
     	Activity project
     ) {
     	PersistenceManager pm = JDOHelper.getPersistenceManager(project);
@@ -255,12 +255,7 @@ public abstract class ActivitiesHelper {
     	resourceAssignmentQuery.forAllDisabled().isFalse();
     	resourceAssignmentQuery.orderByName().ascending();
     	resourceAssignmentQuery.resourceRole().equalTo(RESOURCE_ROLE_MEMBER);
-    	List<Resource> resources = new ArrayList<Resource>();
-    	List<ResourceAssignment> assignments = project.getAssignedResource(resourceAssignmentQuery);
-    	for(ResourceAssignment assignment: assignments) {
-    		resources.add(assignment.getResource());
-    	}
-    	return resources;
+    	return project.getAssignedResource(resourceAssignmentQuery);
     }
 
     /**
