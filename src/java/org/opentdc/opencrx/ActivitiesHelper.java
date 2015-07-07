@@ -24,7 +24,6 @@
 package org.opentdc.opencrx;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +31,7 @@ import java.util.List;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 
+import org.opencrx.kernel.activity1.cci2.ActivityGroupAssignmentQuery;
 import org.opencrx.kernel.activity1.cci2.ActivityQuery;
 import org.opencrx.kernel.activity1.cci2.ActivityTrackerQuery;
 import org.opencrx.kernel.activity1.cci2.ActivityTypeQuery;
@@ -40,6 +40,7 @@ import org.opencrx.kernel.activity1.cci2.ResourceAssignmentQuery;
 import org.opencrx.kernel.activity1.jmi1.AccountAssignmentActivityGroup;
 import org.opencrx.kernel.activity1.jmi1.Activity;
 import org.opencrx.kernel.activity1.jmi1.ActivityCreator;
+import org.opencrx.kernel.activity1.jmi1.ActivityGroupAssignment;
 import org.opencrx.kernel.activity1.jmi1.ActivityLinkTo;
 import org.opencrx.kernel.activity1.jmi1.ActivityTracker;
 import org.opencrx.kernel.activity1.jmi1.ActivityType;
@@ -158,6 +159,24 @@ public abstract class ActivitiesHelper {
     	return null;
     }
     
+    /**
+     * Get customer project group for given project.
+     * 
+     * @param project
+     * @return
+     */
+    public static ActivityTracker getCustomerProjectGroup(
+    	Activity project
+    ) {
+    	PersistenceManager pm = JDOHelper.getPersistenceManager(project);
+		ActivityGroupAssignmentQuery activityGroupAssignmentQuery = (ActivityGroupAssignmentQuery)pm.newQuery(ActivityGroupAssignment.class);
+		activityGroupAssignmentQuery.thereExistsActivityGroup().activityGroupType().equalTo(ActivitiesHelper.ACTIVITY_GROUP_TYPE_PROJECT);
+		List<ActivityGroupAssignment> assignedGroups = project.getAssignedGroup(activityGroupAssignmentQuery);
+		return assignedGroups.isEmpty()
+			? null
+			: (ActivityTracker)assignedGroups.iterator().next().getActivityGroup();	
+    }
+
     /**
      * Get customer projects for the given customer project group.
      * 
@@ -339,5 +358,6 @@ public abstract class ActivitiesHelper {
 	public static final short ACTIVITY_LINK_TYPE_IS_CHILD_OF = 99;
 	public static final short ACTIVITY_PRIORITY_NA = 0;
 	public static final short RESOURCE_ROLE_MEMBER = 2;
-    
+	public static final short WORKRECORD_TYPE_USER_DEFINED = 99;
+	
 }
