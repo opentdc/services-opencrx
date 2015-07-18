@@ -37,6 +37,7 @@ import org.opencrx.kernel.activity1.cci2.ActivityTrackerQuery;
 import org.opencrx.kernel.activity1.cci2.ActivityTypeQuery;
 import org.opencrx.kernel.activity1.cci2.ActivityWorkRecordQuery;
 import org.opencrx.kernel.activity1.cci2.ResourceAssignmentQuery;
+import org.opencrx.kernel.activity1.cci2.ResourceQuery;
 import org.opencrx.kernel.activity1.jmi1.AccountAssignmentActivityGroup;
 import org.opencrx.kernel.activity1.jmi1.Activity;
 import org.opencrx.kernel.activity1.jmi1.ActivityCreator;
@@ -348,6 +349,39 @@ public abstract class ActivitiesHelper {
     	return null;
     }
     
+	/**
+	 * Find resource with name "Rates".
+	 * 
+	 * @param activitySegment
+	 * @return
+	 */
+	public static Resource findRatesResource(
+		org.opencrx.kernel.activity1.jmi1.Segment activitySegment
+	) {
+		PersistenceManager pm = JDOHelper.getPersistenceManager(activitySegment);
+		ResourceQuery resourceQuery = (ResourceQuery)pm.newQuery(Resource.class);
+		resourceQuery.name().equalTo(ActivitiesHelper.RATES_RESOURCE_NAME);
+		List<Resource> resources = activitySegment.getResource(resourceQuery);
+		if(resources.isEmpty()) {
+			try {
+				pm.currentTransaction().begin();
+				Resource resource = pm.newInstance(Resource.class);
+				resource.setName(ActivitiesHelper.RATES_RESOURCE_NAME);
+				activitySegment.addResource(
+					Utils.getUidAsString(),
+					resource
+				);
+				pm.currentTransaction().commit();
+				return resource;
+			} catch(Exception e) {
+				new ServiceException(e).log();
+			}
+			return null;
+		} else {
+			return resources.iterator().next();
+		}
+	}
+
 	public static final short ICAL_CLASS_NA = 0;
 	public static final short ICAL_TYPE_VEVENT = 1;
 	public static final short ACTIVITY_GROUP_TYPE_PROJECT = 40;
@@ -359,5 +393,6 @@ public abstract class ActivitiesHelper {
 	public static final short ACTIVITY_PRIORITY_NA = 0;
 	public static final short RESOURCE_ROLE_MEMBER = 2;
 	public static final short WORKRECORD_TYPE_USER_DEFINED = 99;
+	public static final String RATES_RESOURCE_NAME = "Rates";
 	
 }
