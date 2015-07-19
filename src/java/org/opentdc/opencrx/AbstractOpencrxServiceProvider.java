@@ -101,5 +101,14 @@ public class AbstractOpencrxServiceProvider {
 			)
 		);
 	}
+
+	protected org.opencrx.kernel.code1.jmi1.Segment getCodeSegment(
+	) {
+		return (org.opencrx.kernel.code1.jmi1.Segment)this.getPersistenceManager().getObjectById(
+			new Path("xri://@openmdx*org.opencrx.kernel.code1").getDescendant(
+				"provider", this.getProviderName(), "segment", this.getSegmentName()
+			)
+		);
+	}
 	
 }
